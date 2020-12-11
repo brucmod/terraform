@@ -1,5 +1,5 @@
 # terraform
-Terraform 1 Master 3 worker VM buildout:
+Terraform 2 Master 3 worker VM buildout:
 
 From laptop edit the cluster.tf and provider.tf files for your environment
 
@@ -12,7 +12,7 @@ Ansible host configuration:
 
 From laptop run
 
-for x in `seq 0 3`; do ssh-keygen -R 10.224.114.1$x; ./sshcopy.sh pureuser@10.224.114.1$x; done
+for x in `seq 0 4`; do ssh-keygen -R 10.224.114.1$x; ./sshcopy.sh pureuser@10.224.114.1$x; done
   ( replace above IP addresses uo with your own)
 
 
