@@ -12,7 +12,7 @@ Ansible host configuration:
 
 From laptop run
 
-for x in `seq 0 4`; do ssh-keygen -R 10.224.114.1$x; ./sshcopy.sh pureuser@10.224.114.1$x; done
+for x in `seq 0 4`; do ssh-keygen -R 10.224.114.10$x; ./sshcopy.sh pureuser@10.224.114.10$x; done
   ( replace above IP addresses uo with your own)
 
 
@@ -33,7 +33,7 @@ git clone https://github.com/kubernetes-incubator/kubespray.git
 cd kubespray
 sudo pip3 install -r requirements.txt
 cp -rfp inventory/sample inventory/mycluster
-declare -a IPS=(chi-btm-pwx-n0,10.224.114.1 chi-btm-pwx-n1,10.224.114.2 chi-btm-pwx-n2,10.224.114.3 chi-btm-pwx-n3,10.224.114.4 chi-btm-pwx-n4,10.224.114.5)
+declare -a IPS=(chi-btm-pwx-n0,10.224.114.100 chi-btm-pwx-n1,10.224.114.101 chi-btm-pwx-n2,10.224.114.102 chi-btm-pwx-n3,10.224.114.103 chi-btm-pwx-n4,10.224.114.104)
 CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
 vi inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml #change k8s version to 1.18.10
 
