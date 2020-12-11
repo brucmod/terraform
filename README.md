@@ -26,8 +26,7 @@ On 1st node (copy root ssh key):
 
 sudo su -
 
-ssh-keygen; for x in `seq 0 3`; do ssh-copy-id -i ~/.ssh/id_rsa.pub -o StrictHostKeyChecking=accept-new 10.224.114.1$x; done
-
+'ssh-keygen; for x in seq 0 4; do ssh-copy-id -i ~/.ssh/id_rsa.pub -o StrictHostKeyChecking=accept-new 10.224.114.10$x; done'
 
 git clone https://github.com/kubernetes-incubator/kubespray.git
 cd kubespray
