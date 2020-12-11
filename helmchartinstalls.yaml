@@ -1,0 +1,32 @@
+---
+- hosts: helm
+  become: true
+  become_user: root
+  vars:
+    ansible_python_interpreter: /usr/local/bin/python3  # in case python2.7 also installed
+
+  tasks:
+  # Install MetalLB load balancer
+  - name: Install metallb load balancer
+
+  # Add PSO and PSOX repositories
+  - name: Add helm chart repositories for PSO and PSOX
+    community.kubernetes.helm_repository:
+      repo_name: pso-explorer
+      repo_url: "https://raw.githubusercontent.com/PureStorage-OpenConnect/pso-explorer/master/"
+
+  # Install PSO Explorer helm chart
+  - name: Deploy PSO Explorer helm chart
+    community.kubernetes.helm:
+      name: pso-explorer
+      chart_ref: pso-explorer/pso-explorer
+      release_namespace: pso-explorer
+      create_namespace: true
+      values:
+        timeouts.dashboard_refresh: 30
+        timeouts.cache_refresh: 60
+
+  # Install PSO - first pull values.yaml from git, then install
+#  - name: Install PSO
+#    community.kubernetes.helm:
+#      name: pure-csi

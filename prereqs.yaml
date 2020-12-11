@@ -1,0 +1,193 @@
+---
+- hosts: all
+  become: true
+  become_user: root
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    common_user: pureuser
+
+  tasks:
+  # Helm and Terraform repo adds:
+  - name: add Helm and Terraform repos
+    shell: |
+      curl https://baltocdn.com/helm/signing.asc | apt-key add -
+      echo "deb https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
+      curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
+      apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+    args:
+      warn: false
+
+  - name: Update apt repo and cache on all Debian/Ubuntu boxes
+    apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+
+  - name: Upgrade all packages on servers
+    apt: upgrade=dist force_apt_get=yes
+
+  - name: Check if a reboot is needed on all servers
+    register: reboot_required_file
+    stat: path=/var/run/reboot-required get_md5=no
+
+  - name: Install prerequisite packages from apt
+    apt:
+      pkg:
+      - open-iscsi
+      - multipath-tools
+      - nfs-common
+      - apt-transport-https
+      - curl
+      - sg3-utils
+      - lsscsi
+#      - python-pip
+      - libwww-perl
+      - python3-pip
+      - golang
+      - jq
+      - kernel-package
+      - nodejs
+      - npm
+      - pwgen
+      - virtualenv
+      - helm
+      - terraform
+      update_cache: yes
+
+  - name: Create directories
+    file:
+      path: "{{ item }}"
+      state: directory
+      mode: 0755
+    with_items:
+      - /etc/multipath
+
+  - name: Remove file
+    file:
+      path: /etc/multipath.conf
+      state: absent
+
+  - name: Create a multipath.conf
+    file:
+      path: /etc/multipath.conf
+      state: touch
+      mode: 0755
+
+  - name: disable hostname reconfig
+    lineinfile:
+      dest: /etc/cloud/cloud.cfg
+      state: absent
+      line: "preserve_hostname: false"
+
+  - name: Remove file
+    file:
+      path: /etc/iscsi/initiatorname.iscsi
+      state: absent
+
+  - name: Create a multipath.conf
+    file:
+      path: /etc/iscsi/initiatorname.iscsi
+      state: touch
+      mode: 600
+      
+  - name: Create IQN
+    lineinfile:
+      dest: /etc/iscsi/initiatorname.iscsi
+      state: present
+      line: InitiatorName=iqn.1993-08.org.debian:01:{{ ansible_hostname }}
+
+  - name: Restart iscsid
+    service:
+      name: iscsid
+      state: restarted
+
+  - name: Start service iscsi
+    service:
+      name: iscsid
+      state: started
+
+  - name: Enable service iscsid
+    service:
+      name: iscsid
+      enabled: yes
+  
+#  - name: Change root password
+#    user: name=root password="pureuser"
+
+  - name: Add pureuser user to sudoers
+    lineinfile: 
+      path: /etc/sudoers
+      line: "{{ common_user }}     ALL=(ALL) NOPASSWD:ALL"
+      
+  - name: Allow root SSH access
+    lineinfile: 
+      path: /etc/ssh/sshd_config
+      line: "PermitRootLogin yes"
+      state: present
+    notify: Restart ssh
+
+  - name: "Configure multipath configuration for Pure arrays"
+    blockinfile:
+      path: /etc/multipath.conf
+      block: |
+        defaults {
+          polling_interval  10
+        }
+        devices {
+          device {
+            vendor	"PURE"
+            product	"FlashArray"
+            fast_io_fail_tmo 10
+            path_selector	"queue-length 0"
+            path_grouping_policy	"group_by_prio"
+            path_checker	tur
+            no_path_retry	0
+            hardware_handler	"1 alua"
+            prio	"alua"
+            failback	"immediate"
+            max_sectors_kb 4096
+          }
+        }
+      create: yes
+      owner: root
+      group: root
+      mode: 0600
+      state: present
+    register: multipathconf
+
+  - name: 'restart multipathd'
+    service:
+      name: multipathd
+      state: restarted
+    when:
+      - multipathconf.changed
+
+  - name: Install packages from pip
+    pip:
+      name: 
+        - ansible==2.9.6 # Match what kubespray requires since 2.10.x causes compatibility issues
+        - purestorage
+#        - purity-fb
+
+  - name: Install Pure ansible collections
+    shell: |
+      ansible-galaxy collection install purestorage.flasharray
+      ansible-galaxy collection install community.general
+    #ansible-galaxy collection install community.kubernetes
+    #ansible-galaxy collection install purestorage.flashblade # doesn't work with latest python3
+
+#  - name: growpart
+#    shell: growpart /dev/sda 2
+
+#  - name: "Resize my root filesystem"
+#    command: resize2fs /dev/sda2
+  - name: Set timezone to America/New_York
+    community.general.timezone:
+      name: America/New_York
+
+  handlers:
+  - name: Restart ssh
+    service: name=ssh state=restarted
+         
+      # Example clone a repo with separate git directory
+  #- name: Clone kubespray github repo
+  #  git:
+  #    repo: https://github.com/kubernetes-sigs/kubespray
+  #    dest: ~/kubespray
