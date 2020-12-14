@@ -28,7 +28,7 @@ data "vsphere_virtual_machine" "template" {
 
 resource "vsphere_virtual_machine" "vm" {
   name             = "chi-btm-pwx-n${count.index}"
-  count            = "4"
+  count            = "5"
   resource_pool_id = data.vsphere_resource_pool.pool1.id
   datastore_id     = data.vsphere_datastore.datastore.id
   folder           = "chi-btm"
