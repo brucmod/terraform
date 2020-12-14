@@ -94,7 +94,7 @@ resource "vsphere_virtual_machine" "vm" {
         domain    = "purestorage.com"
       }
       network_interface {
-        ipv4_address = "10.224.114.${0 + count.index}"
+        ipv4_address = "10.224.114.10${0 + count.index}"
         ipv4_netmask = 22
       }
       network_interface {
