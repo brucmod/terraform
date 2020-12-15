@@ -86,7 +86,7 @@
       path: /etc/iscsi/initiatorname.iscsi
       state: touch
       mode: 600
-      
+
   - name: Create IQN
     lineinfile:
       dest: /etc/iscsi/initiatorname.iscsi
@@ -107,17 +107,17 @@
     service:
       name: iscsid
       enabled: yes
-  
+
 #  - name: Change root password
 #    user: name=root password="pureuser"
 
   - name: Add pureuser user to sudoers
-    lineinfile: 
+    lineinfile:
       path: /etc/sudoers
       line: "{{ common_user }}     ALL=(ALL) NOPASSWD:ALL"
-      
+
   - name: Allow root SSH access
-    lineinfile: 
+    lineinfile:
       path: /etc/ssh/sshd_config
       line: "PermitRootLogin yes"
       state: present
@@ -161,7 +161,7 @@
 
   - name: Install packages from pip
     pip:
-      name: 
+      name:
         - ansible==2.9.6 # Match what kubespray requires since 2.10.x causes compatibility issues
         - purestorage
 #        - purity-fb
@@ -185,9 +185,19 @@
   handlers:
   - name: Restart ssh
     service: name=ssh state=restarted
-         
+
       # Example clone a repo with separate git directory
   #- name: Clone kubespray github repo
   #  git:
   #    repo: https://github.com/kubernetes-sigs/kubespray
   #    dest: ~/kubespray
+  # Example clone a repo with separate git directory
+  - name: Clone K8 shell
+  github:
+    repo: https://raw.githubusercontent.com/brucmod/terraform/K8start.sh
+    dest: ~/kubespray
+
+    - name: Clone Values.yaml
+    repo: github:https://raw.githubusercontent.com/brucmod/terraform/values.yaml
+    dest: ~/kubespray
+      
