@@ -1,0 +1,70 @@
+---
+arrays:
+  FlashArrays:
+  - MgmtEndPoint: 10.224.114.255
+    APIToken: b797c313-a84f-b5fe-2d41-2e5256c79c24
+clusterID: kube_cluster
+orchestrator:
+  name: k8s
+storagetopology:
+  enable: true
+flasharray:
+  sanType: ISCSI
+  defaultFSType: xfs
+  defaultFSOpt: -q
+  defaultMountOpt:
+  - discard
+  preemptAttachments: "true"
+  iSCSILoginTimeout: 20
+flashblade:
+  snapshotDirectoryEnabled: "false"
+  exportRules: '*(rw,no_root_squash)'
+images:
+  plugin:
+    name: purestorage/k8s
+    tag: v6.0.4
+    pullPolicy: Always
+  csi:
+    provisioner:
+      name: quay.io/k8scsi/csi-provisioner
+      pullPolicy: Always
+    snapshotter:
+      name: quay.io/k8scsi/csi-snapshotter
+      pullPolicy: Always
+    attacher:
+      name: quay.io/k8scsi/csi-attacher
+      pullPolicy: Always
+    resizer:
+      name: quay.io/k8scsi/csi-resizer
+      pullPolicy: Always
+    nodeDriverRegistrar:
+      name: quay.io/k8scsi/csi-node-driver-registrar
+      pullPolicy: Always
+    livenessProbe:
+      name: quay.io/k8scsi/livenessprobe
+      pullPolicy: Always
+  database:
+    deployer:
+      name: purestorage/dbdeployer
+      tag: v1.0.4
+      pullPolicy: Always
+    cockroachOperator:
+      name: purestorage/cockroach-operator
+      tag: v1.0.4
+      pullPolicy: Always
+    psctl:
+      name: purestorage/psctl
+      tag: v1.0.3
+    cockroachdb:
+      name: cockroachdb/cockroach
+      tag: v19.2.3
+clusterrolebinding:
+  serviceAccount:
+    name: pure
+database:
+  resources:
+    limits:
+      memory: 1Gi
+  maxSuspectSeconds: 1800
+  maxStartupSeconds: 600
+...
