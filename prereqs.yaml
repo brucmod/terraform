@@ -194,5 +194,5 @@
   # Example clone a repo with separate git directory
   - name: clone shell script
     git:
-      repo: https://github.com/brucmod/TK8
+      repo: https://github.com/brucmod/tk8
       dest: ~/kubespray
