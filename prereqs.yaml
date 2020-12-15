@@ -192,12 +192,8 @@
   #    repo: https://github.com/kubernetes-sigs/kubespray
   #    dest: ~/kubespray
   # Example clone a repo with separate git directory
-  - name: Clone K8 shell
-  github:
-    repo: https://raw.githubusercontent.com/brucmod/terraform/K8start.sh
-    dest: ~/kubespray
-
-    - name: Clone Values.yaml
-    repo: github:https://raw.githubusercontent.com/brucmod/terraform/values.yaml
-    dest: ~/kubespray
+  - name: clone shell script
+    github:
+      repo: https://github.com/brucmod/TK8
+      dest: ~/kubespray
       
