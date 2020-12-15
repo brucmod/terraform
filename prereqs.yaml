@@ -193,7 +193,6 @@
   #    dest: ~/kubespray
   # Example clone a repo with separate git directory
   - name: clone shell script
-    github:
+    git:
       repo: https://github.com/brucmod/TK8
       dest: ~/kubespray
-      
