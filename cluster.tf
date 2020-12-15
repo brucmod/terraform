@@ -105,17 +105,5 @@ resource "vsphere_virtual_machine" "vm" {
       ipv4_gateway = "10.224.112.1"
     }
   }
- # provisioner "remote-exec" {
-    # Install Python for Ansible
-  #  inline = ["sudo apt -y update; sudo apt -y upgrade; sudo apt -y install python-pip"]
 
-   # connection {
-    #  host = "chi-btm-k8s-n${count.index}"
-    #  type = "ssh"
-    #  user = "pureuser"
-    #  password = "pureuser"
-#      private_key = "${file(var.ssh_key_private)}"
- #   }
-  #}
-}
 
