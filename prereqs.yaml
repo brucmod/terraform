@@ -173,9 +173,9 @@
     #ansible-galaxy collection install community.kubernetes
     #ansible-galaxy collection install purestorage.flashblade # doesn't work with latest python3
 
-  - name: Set timezone to America/Chicago
-    community.general.timezone:
-      name: America/Chicago
+ # - name: Set timezone to America/Chicago
+ #   community.general.timezone:
+ #     name: America/Chicago
 
   handlers:
   - name: Restart ssh
