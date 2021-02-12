@@ -173,11 +173,6 @@
     #ansible-galaxy collection install community.kubernetes
     #ansible-galaxy collection install purestorage.flashblade # doesn't work with latest python3
 
-#  - name: growpart
-#    shell: growpart /dev/sda 2
-
-#  - name: "Resize my root filesystem"
-#    command: resize2fs /dev/sda2
   - name: Set timezone to America/Chicago
     community.general.timezone:
       name: America/Chicago
