@@ -2,7 +2,7 @@
 arrays:
   FlashArrays:
   - MgmtEndPoint: 10.224.114.255
-    APIToken: b797c313-a84f-b5fe-2d41-2e5256c79c24
+    APIToken: 2e7b28ae-e8e5-f372-ad08-5dec7ca9848a
 clusterID: kube_cluster
 orchestrator:
   name: k8s
