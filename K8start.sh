@@ -17,19 +17,6 @@
 #sudo ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml
 
 
-
-kubectl create namespace pure-pso
-
-kubectl create -f  https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/release-2.0/config/crd/snapshot.storage.k8s.io_volumesnapshotclasses.yaml
-kubectl create -f  https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/release-2.0/config/crd/snapshot.storage.k8s.io_volumesnapshotcontents.yaml
-kubectl create -f  https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/release-2.0/config/crd/snapshot.storage.k8s.io_volumesnapshots.yaml
-kubectl apply -n default -f https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/release-2.0/deploy/kubernetes/snapshot-controller/rbac-snapshot-controller.yaml
-kubectl apply -n default -f https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/release-2.0/deploy/kubernetes/snapshot-controller/setup-snapshot-controller.yaml
-
-helm repo add pure --force-update https://purestorage.github.io/pso-csi
-helm repo update
-helm install pure-pso pure/pure-pso --namespace pure-pso -f values.yaml
-
 helm repo add pso-explorer 'https://raw.githubusercontent.com/PureStorage-OpenConnect/pso-explorer/master/'
 helm repo update
 helm search repo pso-explorer -l
