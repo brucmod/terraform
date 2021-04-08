@@ -101,8 +101,8 @@ resource "vsphere_virtual_machine" "vm" {
         ipv4_address = "10.89.44.${61 + count.index}"
         ipv4_netmask = 24
       }
-      dns_server_list = ["10.224.112.106","8.8.4.4","8.8.8.8"]
-      ipv4_gateway = "10.224.112.1"
+      dns_server_list = ["10.89.9.10 ","10.89.9.107"]
+      ipv4_gateway = "10.89.13.1"
     }
   }
 
