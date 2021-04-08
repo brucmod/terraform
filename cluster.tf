@@ -12,12 +12,12 @@ data "vsphere_resource_pool" "pool1" {
    datacenter_id = data.vsphere_datacenter.dc.id
  }
 data "vsphere_network" "public" {
-  name          = "VLAN112"
+  name          = "Demo603"
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 data "vsphere_network" "iscsi" {
-  name          = "privatevlan"
+  name          = "Demo680"
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
