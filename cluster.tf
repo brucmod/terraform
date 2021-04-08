@@ -4,7 +4,7 @@ data "vsphere_datacenter" "dc" {
 }
 
 data "vsphere_datastore" "datastore" {
-  name          = "-fs-vvol"
+  name          = "PureProd2"
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 data "vsphere_resource_pool" "pool1" {
