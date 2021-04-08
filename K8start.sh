@@ -1,4 +1,4 @@
-#ssh-keygen; for x in `seq 0 4`; do ssh-copy-id -i ~/.ssh/id_rsa.pub -o StrictHostKeyChecking=accept-new 10.224.114.10$x; done
+#ssh-keygen; for x in `seq 0 3`; do ssh-copy-id -i ~/.ssh/id_rsa.pub -o StrictHostKeyChecking=accept-new 10.89.13.x{48 + x}; done
 
 #git clone https://github.com/kubernetes-incubator/kubespray.git
 
@@ -8,7 +8,7 @@
 
 #cp -rfp inventory/sample inventory/mycluster
 
-#declare -a IPS=(chi-btm-pwx-n0,10.224.114.100 chi-btm-pwx-n1,10.224.114.101 chi-btm-pwx-n2,10.224.114.102 chi-btm-pwx-n3,10.224.114.103 chi-btm-pwx-n4,10.224.114.104)
+#declare -a IPS=(cdw-btm-pwx-n0,10.89.13.48 cdw-btm-pwx-n1,10.89.13.49 cdw-btm-pwx-n2,10.89.13.50 cdw-btm-pwx-n3,10.89.13.51)
 
 #CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
 
