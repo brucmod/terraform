@@ -1,10 +1,10 @@
 
 data "vsphere_datacenter" "dc" {
-  name = "Chicago"
+  name = "vh1dvc6.labs.local"
 }
 
 data "vsphere_datastore" "datastore" {
-  name          = "chi-fs-vvol"
+  name          = "-fs-vvol"
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 data "vsphere_resource_pool" "pool1" {
@@ -22,16 +22,16 @@ data "vsphere_network" "iscsi" {
 }
 
 data "vsphere_virtual_machine" "template" {
-  name          = "chi-template-ubuntu20.04-clean"
+  name          = "cdw-template-ubuntu20.04-clean"
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 resource "vsphere_virtual_machine" "vm" {
-  name             = "chi-btm-pwx-n${count.index}"
+  name             = "cdw-btm-pwx-n${count.index}"
   count            = "5"
   resource_pool_id = data.vsphere_resource_pool.pool1.id
   datastore_id     = data.vsphere_datastore.datastore.id
-  folder           = "chi-btm"
+  folder           = "cdw-btm"
   wait_for_guest_ip_timeout = "-1"
   wait_for_guest_net_timeout = "-1"
   enable_disk_uuid = "true"
@@ -90,15 +90,15 @@ resource "vsphere_virtual_machine" "vm" {
 
     customize {
       linux_options {
-        host_name = "chi-btm-pwx-n${count.index}"
+        host_name = "cdw-btm-pwx-n${count.index}"
         domain    = "purestorage.com"
       }
       network_interface {
-        ipv4_address = "10.224.114.10${0 + count.index}"
+        ipv4_address = "10.89.13.${48 + count.index}"
         ipv4_netmask = 22
       }
       network_interface {
-        ipv4_address = "10.10.10.${250 + count.index}"
+        ipv4_address = "10.89.44.${61 + count.index}"
         ipv4_netmask = 24
       }
       dns_server_list = ["10.224.112.106","8.8.4.4","8.8.8.8"]
@@ -107,4 +107,5 @@ resource "vsphere_virtual_machine" "vm" {
   }
 
 }
+
 
