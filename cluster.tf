@@ -1,6 +1,6 @@
 
 data "vsphere_datacenter" "dc" {
-  name = "VHdemo"
+  name = "VHDemo"
 }
 
 data "vsphere_datastore" "datastore" {
