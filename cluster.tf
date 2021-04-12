@@ -7,10 +7,10 @@ data "vsphere_datastore" "datastore" {
   name          = "PureProd2"
   datacenter_id = data.vsphere_datacenter.dc.id
 }
-#data "vsphere_resource_pool" "pool1" {
-   #name          = "bm-rp"
-   #datacenter_id = data.vsphere_datacenter.dc.id
- #}
+data "vsphere_resource_pool" "pool1" {
+   name          = "bm-rp"
+   datacenter_id = data.vsphere_datacenter.dc.id
+ }
 data "vsphere_network" "public" {
   name          = "Demo603"
   datacenter_id = data.vsphere_datacenter.dc.id
