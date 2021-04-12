@@ -1,6 +1,6 @@
 
 data "vsphere_datacenter" "dc" {
-  name = "vh1dvc6.labs.local"
+  name = "VHdemo"
 }
 
 data "vsphere_datastore" "datastore" {
