@@ -36,7 +36,7 @@ resource "vsphere_virtual_machine" "vm" {
   wait_for_guest_net_timeout = "-1"
   enable_disk_uuid = "true"
 
-  num_cpus = 4
+  num_cpus = 8
   memory   = 12288
   guest_id = data.vsphere_virtual_machine.template.guest_id
   scsi_type = data.vsphere_virtual_machine.template.scsi_type
